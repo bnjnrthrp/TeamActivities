@@ -79,7 +79,35 @@ void print_info(int* counts) {
 */
 void run_program(char* file_name) {
      // student TODO
+    // Read the file
+        FILE *input = fopen(file_name, "r");
+    // verify that we actually opened a file / not an empty file
+    if (input == NULL) {
+        printf("error opening the file\n");
+        exit(1); // Does exit not return something? What's the difference between exit(1) and return 1;
+    }
 
+    char* line = malloc(BUFF_SIZE * sizeof(char));
+
+    int* counts = calloc(11, sizeof(int));
+
+    while (fgets(line, BUFF_SIZE, input) != NULL) { //!= NULL means go until the end of file??
+        // do the thing, line now has the line from input
+        // For each line, convert to uppercase.
+        // Use contain function to
+        convertToUpperCase(line);
+        for (int i = 0; i < 11; i++){
+            if (contains(line, instructions[i])){
+                counts[i]++;
+            }
+        }
+    }
+
+    print_info(counts);
+
+    free(line); // don't forget to free memory!
+    free(counts);
+    fclose(input); // don't forget to close a file!
 }
 
 

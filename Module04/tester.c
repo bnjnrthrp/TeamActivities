@@ -56,7 +56,7 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    //get teh type of sort
+    //get the type of sort
     const int type = atoi(argv[1]);
     if(type > 3) {
         printf("invalid type");

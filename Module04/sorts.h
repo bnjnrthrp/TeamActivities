@@ -19,7 +19,27 @@
 //           be modified to store a sorted array of size.
 void bubbleSortIntegers(int *array, unsigned int size, int print)
 {
-   // TODO implement
+   // Outer loop iterates through whole array. Each iteration tells us how many elements are in the sorted side.
+   int num_swaps;
+    for (int i=0; i<size - 1; i++){
+    num_swaps = 0;// reset swap counter to 0 at the top of the loop
+    // Inner loop starts at 0 and goes until the end of the unsorted list
+        for(int j=0; j< size -1 -i; j++){
+            //compares j and the element to its right, swaps if j is larger.
+            if(array[j]>array[j+1]){
+                swap(&array[j],&array[j+1]);
+                num_swaps++; // Increment the swap counter for this cycle.
+            }
+        }
+        if (num_swaps == 0){ //if we went through the entire array without needing a swap
+            break; //then its all sorted and we can break
+        }
+   
+   // now that we're done swapping print the current state of the array
+    if(print){
+        printIntArray(array, size);
+        }
+    }
 }
 
 // provided code 

@@ -4,6 +4,13 @@
 
 int main(int argc, char const *argv[])
 {
-    // Wite your code here to practice reading the program arguments. 
-    return 0;
+    if (argc < 2) {
+    printf("You must include at least 1 argument\n");
+    return 1; //or exit(1);
+  }
+   // print number of arguments
+    for (int i = 0; i < argc; i++) {
+        printf("Argument %d: %s\n", i, argv[i]);
+    }
+
 }
