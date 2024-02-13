@@ -22,21 +22,45 @@ void printSingleRow(ull *row, int size)
     printf("\n");
 }
 
+// dynamic programming: find the value of the number in row n and column i
 ull pascaldp(int n, int i, ull *ops)
 {
-    // student todo
-    return NULL; // remove
+    // if already calculated, return from the array
+    if (table[n][i] > 0)
+    {
+        printf("table[%d][%d]\n", n, i); // TESTING
+        return table[n][i];
+    }
+    // otherwise we need to calculate it ourselves
+    // if this is the first or last number in the row then it equals 1
+    if (i == 0 || i == n)
+    {
+        printf("\ti was 0 or n\n"); // TESTING
+        table[n][i] = 1;
+    }
+    else
+    {
+        printf("\tadding to the table\n"); // TESTING
+        (*ops)++;
+        table[n][i] = table[n - 1][i - 1] + table[n - 1][i];
+        printf("\t\t%llu + %llu = %llu\n", table[n - 1][i - 1], table[n - 1][i], table[n][i]); // TESTING
+    }
+
+    return table[n][i];
 }
 
-ull* pascaldp_full(int n, ull *ops)
+// *ops is a pointer to an ull number that counts the number of operations
+// n is an integer for the row we're in
+ull *pascaldp_full(int n, ull *ops)
 {
-    ull *row = malloc((sizeof(ull)) * (n+1));
+    ull *row = malloc((sizeof(ull)) * (n + 1));
     for (int i = 0; i <= n; i++)
     {
         row[i] = pascaldp(n, i, ops);
     }
     return row;
 }
+
 ull pascalr(int n, int i, ull *ops)
 {
     if (n == i || i == 0)
@@ -50,16 +74,15 @@ ull pascalr(int n, int i, ull *ops)
     }
 }
 
-ull* pascalr_full(int n, ull *ops)
+ull *pascalr_full(int n, ull *ops)
 {
-    ull *row = malloc((sizeof(ull)) * (n+1));
+    ull *row = malloc((sizeof(ull)) * (n + 1));
     for (int i = 0; i <= n; i++)
     {
         row[i] = pascalr(n, i, ops);
     }
     return row;
 }
-
 
 ull *pascal_iterative(int n, ull *ops)
 {
@@ -82,7 +105,7 @@ ull *pascal_iterative(int n, ull *ops)
         }
     }
     // copy the last row into a new array to return
-    ull *row = malloc((sizeof(ull)) * (n+1));
+    ull *row = malloc((sizeof(ull)) * (n + 1));
     for (int i = 0; i <= n; i++)
     {
         row[i] = triangle[n][i];
@@ -98,34 +121,33 @@ ull *pascal_iterative(int n, ull *ops)
     return row;
 }
 
-
-
-double time_function(ull* (*func)(int, ull *), int n, ull *ops, bool print)
+// NOTE: this is receiving the row we malloced
+double time_function(ull *(*func)(int, ull *), int n, ull *ops, bool print)
 {
     // Setup timers
     struct timespec begin, end;
     // Get the time before we start
     clock_gettime(CLOCK_MONOTONIC, &begin);
-    ull* row = func(n, ops);
+    ull *row = func(n, ops);
     clock_gettime(CLOCK_MONOTONIC, &end);
-    if(print) {
+    if (print)
+    {
         printSingleRow(row, n);
+        free(row); // NOTE: added this to try and fix memory leak?
     }
     return (end.tv_nsec - begin.tv_nsec) / 1000000000.0 +
            (end.tv_sec - begin.tv_sec);
 }
 
-
-
-void help() {
+void help()
+{
     printf("./pascal.out N [Type] [Print Level]\n");
     printf("\tN is the number of rows in the pascal triangle, required.\n");
     printf("\t[Type] is 4 for dp and iterative only, 3 for all three, 2 for dynamic programming version, 1 for recursive version, 0 for iterative version, defaults to 3.\n");
     printf("\t[Print Level] leave blank for speed compare only, or print to print row\n");
-
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
@@ -137,12 +159,16 @@ int main(int argc, char* argv[])
     const int n = atoi(argv[1]);
     int type = 3;
     int print = 0;
-    if (argc > 2) {
+    if (argc > 2)
+    {
         type = atoi(argv[2]);
     }
-    if(argc > 3) {
+    if (argc > 3)
+    {
         print = true;
     }
+
+    table = (ull *)calloc((MAX * MAX), sizeof(ull *));
 
     ull ops;
     double time;
@@ -190,6 +216,5 @@ int main(int argc, char* argv[])
 
         break;
     }
-
-
+    // free(table);
 }
