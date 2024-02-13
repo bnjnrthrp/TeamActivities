@@ -16,12 +16,11 @@ int findMinimum(int *array, int start, int stop)
     return 0; // modify to return the index of the min value
 }
 
-
 // =============== Sort Function ===============
 // Provided below is a sort function. I have also
 // provided a template for how to document functions
 // to help organize your code.
-// Name: sort
+// Name: Selectionsort
 // Input(s):
 //  - 'array' is a pointer to an integer address.
 //     This is the start of some 'contiguous block of memory' that we will sort.
@@ -44,13 +43,11 @@ void selectionSortIntegers(int *array, unsigned int size, int print)
 //  - 'array' is a pointer to an integer address.
 //     This is the start of some 'contiguous block of memory' that we will sort.
 //  - 'size' tells us how big the array of data is we are sorting.
-//  - 'print' tells it to print out after each iteration 
+//  - 'print' tells it to print out after each iteration
 // Output: No value is returned, but 'array' should be modified to store a sorted array of numbers.
 void insertionSortIntegers(int *array, unsigned int size, int print)
 {
     // TODO: Implement insertion sort
- 
-
 }
 
 /** Code for Bubble Sort (from Lab -if not compiling, comment out the internals, but leave the function definition) ***/
@@ -68,8 +65,32 @@ void insertionSortIntegers(int *array, unsigned int size, int print)
 //           be modified to store a sorted array of size.
 void bubbleSortIntegers(int *array, unsigned int size, int print)
 {
-    // code generated from lab
+    // Outer loop iterates through whole array. Each iteration tells us how many elements are in the sorted side.
+    int num_swaps;
+    for (int i = 0; i < size - 1; i++)
+    {
+        num_swaps = 0; // reset swap counter to 0 at the top of the loop
+                       // Inner loop starts at 0 and goes until the end of the unsorted list
+        for (int j = 0; j < size - 1 - i; j++)
+        {
+            // compares j and the element to its right, swaps if j is larger.
+            if (array[j] > array[j + 1])
+            {
+                swap(&array[j], &array[j + 1]);
+                num_swaps++; // Increment the swap counter for this cycle.
+            }
+        }
+        if (num_swaps == 0)
+        {          // if we went through the entire array without needing a swap
+            break; // then its all sorted and we can break
+        }
 
+        // now that we're done swapping print the current state of the array
+        if (print)
+        {
+            printIntArray(array, size);
+        }
+    }
 }
 
 // ** You will work on merge sort during the lab on Module 06 ** //
@@ -90,6 +111,44 @@ void merge(int arr[], int temp[], int l, int m, int r)
     int i = l;
     int j = m + 1;
     int start = l;
+
+    // While we loop through the left side
+    while (i <= m && j <= r)
+    {
+        // Compare left side index to right side index
+        if (arr[i] < arr[j])
+        {
+            temp[start] = arr[i];
+            start++;
+            i++;
+        }
+        else
+        {
+            // Add right side to the temp array
+            temp[start] = arr[j];
+            start++;
+            j++;
+        }
+    }
+    // finish adding the leftover right side
+    while (j <= r)
+    {
+        temp[start] = arr[j];
+        start++;
+        j++;
+    }
+    // leftover on the left, finish adding to array
+    while (i <= m)
+    {
+        temp[start] = arr[i];
+        start++;
+        i++;
+    }
+    // copy temp array to original array
+    for (i = l; i <= r; i++)
+    {
+        arr[i] = temp[i];
+    }
 }
 
 // To be built during week 6 lab
@@ -101,12 +160,22 @@ void merge(int arr[], int temp[], int l, int m, int r)
 //          	This helps temporarily store the sorted subarray.
 //          (3) 'l' and 'r' are integers, which are the first index and the last index of 'arr' respectively.
 // Output: No value is returned, but 'array' should be modified to store a sorted array of numbers.
-void merge_sort(int arr[], int temp[], int l, int r)
+void mergeSort(int arr[], int temp[], int l, int r)
 {
-   
-}
+    // recursion if r > l
+    if (r > l)
+    {
+        //  1. Find the middle point 'm' to divide the array into two halves:
 
-// lab build, merge sort
+        int m = (l + r) / 2;
+        //  2. divide the first half:
+        mergeSort(arr, temp, l, m);
+        //  3. divide the second half:
+        mergeSort(arr, temp, m + 1, r);
+        //  4. Merge the two halves sorted in step 2 and 3:
+        merge(arr, temp, l, m, r);
+    }
+}
 
 void mergeSortIntegers(int *array, unsigned int size, int print)
 { // print is ignored for this one
@@ -118,11 +187,16 @@ void mergeSortIntegers(int *array, unsigned int size, int print)
         return;
 
     int *temp = (int *)malloc(sizeof(int) * size);
-    merge_sort(array, temp, 0, size - 1);
+    if (temp == NULL)
+    {
+        printf("array was null\n");
+        exit(1);
+    }
+    mergeSort(array, temp, 0, size - 1);
     free(temp);
 }
 
-// provided code 
+// provided code
 
 // =============== Helper Functions ===============
 // Name:    compare
@@ -137,8 +211,8 @@ int compare(const void *a, const void *b)
     return (*(int *)a - *(int *)b);
 }
 
-void quickSortIntegers(int* array, unsigned int size, int print) 
-{   // print is ignored as qsort doesn't use it
+void quickSortIntegers(int *array, unsigned int size, int print)
+{ // print is ignored as qsort doesn't use it
     qsort(array, size, sizeof(int), compare);
 }
 

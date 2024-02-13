@@ -12,10 +12,10 @@
 // these are called function pointers
 void (*sorts[])(int *, unsigned int, int) = {
     bubbleSortIntegers,
-    quickSortIntegers
-};
+    quickSortIntegers};
 
-int* get_random_array(int size) {
+int *get_random_array(int size)
+{
     // Allocate memory
     int *random = (int *)malloc(sizeof(int) * size);
 
@@ -28,8 +28,8 @@ int* get_random_array(int size) {
     return random;
 }
 
-
-double sort_and_time(int* array, int size, int type, int print) {
+double sort_and_time(int *array, int size, int type, int print)
+{
     // Setup timers
     struct timespec begin, end;
     // Get the time before we start
@@ -40,9 +40,8 @@ double sort_and_time(int* array, int size, int type, int print) {
     clock_gettime(CLOCK_MONOTONIC, &end);
 
     return (end.tv_nsec - begin.tv_nsec) / 1000000000.0 +
-                        (end.tv_sec - begin.tv_sec);
+           (end.tv_sec - begin.tv_sec);
 }
-
 
 int main(int argc, char const *argv[])
 {
@@ -56,20 +55,20 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    //get the type of sort
+    // get the type of sort
     const int type = atoi(argv[1]);
-    if(type > 3) {
+    if (type > 3)
+    {
         printf("invalid type");
         return 1;
     }
-
-
 
     // Convert the argument of the program into an integer
     const int size = atoi(argv[2]);
 
     int print = 0;
-    if (argc == 4) {
+    if (argc == 4)
+    {
         print = 1;
     }
 
@@ -77,10 +76,10 @@ int main(int argc, char const *argv[])
     time_t t;
     srand((unsigned)time(&t));
 
-    int* random = get_random_array(size);
+    int *random = get_random_array(size);
 
-    
-    if(print) {
+    if (print)
+    {
         printf("Before the sort: ");
         printIntArray(random, size);
     }
@@ -96,7 +95,6 @@ int main(int argc, char const *argv[])
 
     printf("Total time = %f seconds\n", time_taken);
 
-    
     // Free our random array
     free(random);
     return 0;

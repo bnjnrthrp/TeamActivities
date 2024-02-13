@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
     mergeSortIntegers(dataset5, 11, print);
     mergeSortIntegers(dataset6, 11, print);
 
-
     printIntArray(dataset1, 11);
     printIntArray(dataset2, 11);
     printIntArray(dataset3, 11);
