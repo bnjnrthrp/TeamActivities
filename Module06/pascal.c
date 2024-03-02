@@ -25,28 +25,7 @@ void printSingleRow(ull *row, int size)
 // dynamic programming: find the value of the number in row n and column i
 ull pascaldp(int n, int i, ull *ops)
 {
-    //     // if already calculated, return from the array
-    //     if (table[n][i] > 0)
-    //     {
-    //         printf("table[%d][%d]\n", n, i); // TESTING
-    //         return table[n][i];
-    //     }
-    //     // otherwise we need to calculate it ourselves
-    //     // if this is the first or last number in the row then it equals 1
-    //     if (i == 0 || i == n)
-    //     {
-    //         printf("\ti was 0 or n\n"); // TESTING
-    //         table[n][i] = 1;
-    //     }
-    //     else
-    //     {
-    //         printf("\tadding to the table\n"); // TESTING
-    //         (*ops)++;
-    //         table[n][i] = table[n - 1][i - 1] + table[n - 1][i];
-    //         printf("\t\t%llu + %llu = %llu\n", table[n - 1][i - 1], table[n - 1][i], table[n][i]); // TESTING
-    //     }
 
-    //     return table[n][i];
     if (table[n][i] > 0)
     {
         return table[n][i];
