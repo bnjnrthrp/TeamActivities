@@ -18,7 +18,7 @@ def shortest_path_dijkstra_heap(graph, start, goal) -> float:
     # loop until the queue is empty
     while queue:
        d, u = heapq.heappop(queue)
-         # loop through the neighbors of u
+       # loop through the neighbors of u
        for v in graph.neighbors(u):
             # calculate the distance to v
             alt = d + graph.cost(u, v)
